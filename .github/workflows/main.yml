@@ -17,15 +17,12 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Check files in directory
-      run: |
-        echo "Kiểm tra danh sách file hiện tại:"
-        ls -la
-
     - name: Install dependencies & Buildozer
       run: |
         sudo apt update
-        sudo apt install -y git zip unzip openjdk-17-jdk libltdl-dev libffi-dev
+        # Cài đặt thêm các gói 32-bit và công cụ nền tảng để Aidl và các SDK tools hoạt động chính xác
+        sudo apt install -y git zip unzip openjdk-17-jdk libltdl-dev libffi-dev \
+          libc6:i386 libstdc++6:i386 zlib1g:i386
         pip install --upgrade pip
         pip install --upgrade buildozer cython==0.29.34
 
@@ -34,6 +31,10 @@ jobs:
         buildozer android debug
 
     - name: Upload APK artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: package
+        path: bin/*.apk
       uses: actions/upload-artifact@v4
       with:
         name: package
