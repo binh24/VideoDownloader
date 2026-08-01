@@ -7,20 +7,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
-    container:
-      image: ghcr.io/kivy/buildozer:latest
-      options: --user root
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Fix directory permissions for container
-      run: |
-        chown -R root:root /__w/_temp
-        git config --global --add safe.directory /__w/VideoDownloader/VideoDownloader
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
 
-    - name: Run Buildozer Build
+    - name: Install dependencies & Buildozer
+      run: |
+        sudo apt update
+        sudo apt install -y git zip unzip openjdk-17-jdk libltdl-dev libffi-dev
+        pip install --upgrade pip
+        pip install --upgrade buildozer cython==0.29.34
+
+    - name: Build with Buildozer
       run: |
         buildozer android debug
 
