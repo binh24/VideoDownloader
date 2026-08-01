@@ -6,16 +6,23 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04  # Cố định bản Ubuntu 22.04 ổn định để tránh lỗi phiên bản mới
+    runs-on: ubuntu-22.04
+    container:
+      image: ghcr.io/kivy/buildozer:latest
+      options: --user root
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Build with Buildozer
-      uses: kivy/buildozer-action@v1
-      with:
-        command: buildozer android debug
+    - name: Fix directory permissions for container
+      run: |
+        chown -R root:root /__w/_temp
+        git config --global --add safe.directory /__w/VideoDownloader/VideoDownloader
+
+    - name: Run Buildozer Build
+      run: |
+        buildozer android debug
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
