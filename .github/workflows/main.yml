@@ -35,7 +35,3 @@ jobs:
       with:
         name: package
         path: bin/*.apk
-      uses: actions/upload-artifact@v4
-      with:
-        name: package
-        path: bin/*.apk
