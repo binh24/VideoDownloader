@@ -19,8 +19,9 @@ jobs:
 
     - name: Install dependencies & Buildozer
       run: |
+        # Kích hoạt kiến trúc 386 để tải các gói i386 cho Android SDK
+        sudo dpkg --add-architecture i386
         sudo apt update
-        # Cài đặt thêm các gói 32-bit và công cụ nền tảng để Aidl và các SDK tools hoạt động chính xác
         sudo apt install -y git zip unzip openjdk-17-jdk libltdl-dev libffi-dev \
           libc6:i386 libstdc++6:i386 zlib1g:i386
         pip install --upgrade pip
@@ -35,3 +36,4 @@ jobs:
       with:
         name: package
         path: bin/*.apk
+
