@@ -31,11 +31,21 @@ jobs:
         pip install --upgrade pip
         pip install --upgrade buildozer cython==0.29.34
 
+    # === THÊM BƯỚC CACHE ĐỂ TIẾT KIỆM THỜI GIAN Ở CÁC LẦN BUILD SAU ===
+    - name: Cache Buildozer global directory
+      uses: actions/cache@v3
+      with:
+        path: |
+          .buildozer
+          /home/runner/.buildozer
+        key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec') }}
+        restore-keys: |
+          ${{ runner.os }}-buildozer-
+
     - name: Accept Android SDK Licenses Automatically
       run: |
         mkdir -p ~/.android
         touch ~/.android/repositories.cfg
-        # Tạo sẵn thư mục buildozer để tránh lỗi phân quyền
         mkdir -p .buildozer
 
     - name: Build APK with Buildozer
@@ -47,4 +57,3 @@ jobs:
       with:
         name: package
         path: bin/*.apk
-
