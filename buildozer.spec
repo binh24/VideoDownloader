@@ -22,7 +22,7 @@ source.dir = .
 source.main = main.py
 
 # (list) Các thư viện Python cần thiết
-requirements = python3,kivy,requests,beautifulsoup4,yt-dlp
+requirements = python3==3.10.11,kivy,requests,beautifulsoup4,yt-dlp,ffmpeg
 
 # (str) Định dạng hướng màn hình (portrait = dọc)
 orientation = portrait
